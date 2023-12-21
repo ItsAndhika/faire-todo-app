@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ isDark: true }" :class="isDark ? 'dark' : ''">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="A todo list web to help you organise what to do"
+		/>
+		<title>Faire | Help You Organise What To Do</title>
+		<link rel="icon" href="./favicon.png" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<script src="./js/feather-icons.js"></script>
+		<script src="./js/alpine.js" defer></script>
+	</head>
+	<body
+		class="font-['Poppins'] bg-slate-100 dark:bg-zinc-900 dark:text-slate-100"
+	>
+		<header
+			class="fixed top-0 left-0 right-0 w-screen bg-slate-200 shadow-lg dark:bg-zinc-800 dark:text-slate-100"
+		>
+			<div
+				class="flex justify-between items-center w-full h-full p-5 mx-auto max-w-4xl"
+			>
+				<h1 class="text-2xl font-semibold">Faire</h1>
+				<div
+					class="w-5 h-5 cursor-pointer transition text-black hover:opacity-80 dark:text-white"
+					@click="isDark = ! isDark"
+				>
+					<i data-feather="sun"></i>
+				</div>
+			</div>
+		</header>
+		<main
+			class="w-full h-auto mt-24 grid gap-5 mx-auto max-w-4xl"
+			x-data="{ newTodo: '', todos: JSON.parse(localStorage.getItem('todos') || '[]') }"
+			x-init="$watch('todos', value => localStorage.setItem('todos', JSON.stringify(value)))"
+		>
+			<h1 class="text-2xl font-semibold text-center">To Do List</h1>
+			<form
+				class="w-11/12 flex justify-center items-center mx-auto"
+				@submit.prevent=""
+			>
+				<input
+					type="text"
+					class="w-10/12 h-10 bg-neutral-300 mx-auto outline-none p-2 text-lg border border-neutral-500 placeholder:text-neutral-500 dark:bg-zinc-400 dark:text-zinc-800 dark:placeholder:text-zinc-600"
+					placeholder="Add To Do Here..."
+					x-model="newTodo"
+					@change="$event.target.value = ''"
+				/>
+				<button
+					class="w-2/12 h-full bg-slate-200 text-lg text-neutral-900 transition outline-none hover:bg-opacity-70 dark:bg-zinc-500 dark:text-white dark:hover:bg-opacity-70"
+					type="submit"
+					@click="todos = [].concat({id: (Math.random() * 100).toFixed(0), text: newTodo}, todos)"
+				>
+					Add
+				</button>
+			</form>
+			<template x-for="todo in todos" :key="todo.id">
+				<div
+					class="w-11/12 h-20 bg-slate-100 mx-auto shadow-lg rounded-lg flex justify-between items-center p-5 dark:bg-zinc-600"
+				>
+					<h1
+						class="text-xl font-semibold dark:text-zinc-300"
+						x-text="todo.text"
+					></h1>
+					<button
+						@click="todos = todos.filter(currentTodo => currentTodo.id !== todo.id)"
+					>
+						<img
+							src="./svg/delete.svg"
+							alt=""
+							class="w-5 h-5 text-black transition hover:opacity-70"
+						/>
+					</button>
+				</div>
+			</template>
+		</main>
+		<script>
+			feather.replace();
+		</script>
+	</body>
+</html>
