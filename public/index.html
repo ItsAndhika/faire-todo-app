@@ -25,9 +25,17 @@
 				<h1 class="text-2xl font-semibold">Faire</h1>
 				<div
 					class="w-5 h-5 cursor-pointer transition text-black hover:opacity-80 dark:text-white"
+					:class="isDark ? 'block' : 'hidden'"
 					@click="isDark = ! isDark"
 				>
 					<i data-feather="sun"></i>
+				</div>
+				<div
+					class="w-5 h-5 cursor-pointer transition text-black hover:opacity-80 dark:text-white"
+					:class="isDark ? 'hidden' : 'block'"
+					@click="isDark = ! isDark"
+				>
+					<i data-feather="moon"></i>
 				</div>
 			</div>
 		</header>
@@ -58,19 +66,16 @@
 			</form>
 			<template x-for="todo in todos" :key="todo.id">
 				<div
-					class="w-11/12 h-20 bg-slate-100 mx-auto shadow-lg rounded-lg flex justify-between items-center p-5 dark:bg-zinc-600"
+					class="w-11/12 h-10 bg-slate-100 relative mx-auto shadow-lg rounded-lg flex justify-between items-center p-5 dark:bg-zinc-600"
 				>
-					<h1
-						class="text-xl font-semibold dark:text-zinc-300"
-						x-text="todo.text"
-					></h1>
+					<h1 class="text-xl dark:text-zinc-300" x-text="todo.text"></h1>
 					<button
 						@click="todos = todos.filter(currentTodo => currentTodo.id !== todo.id)"
 					>
 						<img
-							src="./svg/delete.svg"
+							src="./svg/trash-outline.svg"
 							alt=""
-							class="w-5 h-5 text-black transition hover:opacity-70"
+							class="w-2/12 h-full bg-red-500 p-1 transition rounded-lg absolute top-0 right-0 hover:opacity-70"
 						/>
 					</button>
 				</div>
